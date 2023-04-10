@@ -4,16 +4,19 @@
 	export let player: Player | PlayerNone;
 	export let isVictoryCell: boolean;
 	$: victoryClass = isVictoryCell ? 'victory' : '';
+
+	let input: HTMLButtonElement;
+	export function focus() {
+		input.focus();
+	}
 </script>
 
-<div on:click on:keydown class={victoryClass}>
-	<span>
-		{player}
-	</span>
-</div>
+<button on:click class={victoryClass} bind:this={input}>
+	{player}
+</button>
 
 <style>
-	div {
+	button {
 		width: 100px;
 		height: 100px;
 		background-color: #efefef;
@@ -22,18 +25,17 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}
 
-	.victory {
-		background-color: #00ff00;
-	}
-
-	span {
 		font-size: 50px;
 		font-weight: bold;
 	}
 
-	div {
-		background-color: #efefef;
+	button:focus {
+		border-color: blue;
+		border-width: 0.2rem;
+	}
+
+	.victory {
+		background-color: #00ff00;
 	}
 </style>

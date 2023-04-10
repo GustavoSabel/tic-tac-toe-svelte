@@ -12,6 +12,7 @@
 	];
 	let currentPlayer: Player = 'X';
 	let victory: { winner: Player; line: Line } | null = null;
+	let cellsElements: Field[][] = [[], [], []];
 
 	const onClick = (rowIndex: number, colIndex: number) => {
 		if (board[rowIndex][colIndex] === ' ' && victory === null) {
@@ -28,19 +29,16 @@
 			currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
 		}
 	};
-	const onKeyDown = (event: KeyboardEvent, rowIndex: number, colIndex: number) => {
-		if (event.key === 'Space') {
-			onClick(rowIndex, colIndex);
-		}
-	};
 	const newGame = () => {
-		victory = null
+		victory = null;
 		board = [
 			[' ', ' ', ' '],
 			[' ', ' ', ' '],
 			[' ', ' ', ' ']
 		];
-	}
+		cellsElements[0][0].focus()
+	};
+	$: cellsElements[0][0] && newGame();
 </script>
 
 <div class="game">
@@ -49,11 +47,11 @@
 			<div class="row">
 				{#each row as cell, colIndex}
 					<Field
+						bind:this={cellsElements[rowIndex][colIndex]}
 						player={cell}
 						isVictoryCell={!!victory &&
 							victory.line.some((cell) => cell.row === rowIndex && cell.col === colIndex)}
 						on:click={() => onClick(rowIndex, colIndex)}
-						on:keydown={(e) => onKeyDown(e, rowIndex, colIndex)}
 					/>
 				{/each}
 			</div>
@@ -70,12 +68,21 @@
 	}
 	button.newGame {
 		margin-top: 20px;
-		padding: 10px;
 		font-size: 20px;
+		background-color: #efefef;
+		width: 10rem;
+		height: 3rem;
+	}
+	button.newGame:focus {
+		border: 0.2rem solid blue;
 	}
 	.board {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		justify-content: center;
+	}
+	.row {
+		display: flex;
+		flex-direction: row;
 	}
 </style>
