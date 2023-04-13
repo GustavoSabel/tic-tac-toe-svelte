@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Player, PlayerNone } from '../Types/PlayerType';
 
+	export let ariaLabel: string;
 	export let player: Player | PlayerNone;
 	export let isVictoryCell: boolean;
 	$: victoryClass = isVictoryCell ? 'victory' : '';
@@ -11,7 +12,7 @@
 	}
 </script>
 
-<button on:click class={victoryClass} bind:this={input}>
+<button on:click class={victoryClass} bind:this={input} aria-label={ariaLabel}>
 	{player}
 </button>
 

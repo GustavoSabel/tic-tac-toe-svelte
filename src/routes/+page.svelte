@@ -36,7 +36,7 @@
 			[' ', ' ', ' '],
 			[' ', ' ', ' ']
 		];
-		cellsElements[0][0].focus()
+		cellsElements[0][0].focus();
 	};
 	$: cellsElements[0][0] && newGame();
 </script>
@@ -47,6 +47,7 @@
 			<div class="row">
 				{#each row as cell, colIndex}
 					<Field
+						ariaLabel={`Row ${rowIndex + 1} column ${colIndex + 1}`}
 						bind:this={cellsElements[rowIndex][colIndex]}
 						player={cell}
 						isVictoryCell={!!victory &&
