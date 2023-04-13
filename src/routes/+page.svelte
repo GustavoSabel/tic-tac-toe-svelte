@@ -3,16 +3,20 @@
 	import type { BoardType } from '../Types/BoardType';
 	import type { Line } from '../Types/Line';
 	import type { Player } from '../Types/PlayerType';
-	import Field from './Field.svelte';
+	import Board from './Board.svelte';
 
-	let board: BoardType = [
-		[' ', ' ', ' '],
-		[' ', ' ', ' '],
-		[' ', ' ', ' ']
-	];
+	function createCleanBoard(): BoardType {
+		return [
+			[' ', ' ', ' '],
+			[' ', ' ', ' '],
+			[' ', ' ', ' ']
+		];
+	}
+
+	let board: BoardType = createCleanBoard();
 	let currentPlayer: Player = 'X';
 	let victory: { winner: Player; line: Line } | null = null;
-	let cellsElements: Field[][] = [[], [], []];
+	let boardElement: Board;
 
 	const onClick = (rowIndex: number, colIndex: number) => {
 		if (board[rowIndex][colIndex] === ' ' && victory === null) {
@@ -29,35 +33,18 @@
 			currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
 		}
 	};
+
 	const newGame = () => {
 		victory = null;
-		board = [
-			[' ', ' ', ' '],
-			[' ', ' ', ' '],
-			[' ', ' ', ' ']
-		];
-		cellsElements[0][0].focus();
+		board = createCleanBoard();
+		boardElement.focusFirstField();
 	};
-	$: cellsElements[0][0] && newGame();
+
+	$: boardElement && newGame();
 </script>
 
 <div class="game">
-	<div class="board">
-		{#each board as row, rowIndex}
-			<div class="row">
-				{#each row as cell, colIndex}
-					<Field
-						ariaLabel={`Row ${rowIndex + 1} column ${colIndex + 1}`}
-						bind:this={cellsElements[rowIndex][colIndex]}
-						player={cell}
-						isVictoryCell={!!victory &&
-							victory.line.some((cell) => cell.row === rowIndex && cell.col === colIndex)}
-						on:click={() => onClick(rowIndex, colIndex)}
-					/>
-				{/each}
-			</div>
-		{/each}
-	</div>
+	<Board {board} {victory} {onClick} bind:this={boardElement} />
 	<button class="newGame" on:click={newGame}>New Game</button>
 </div>
 
@@ -77,13 +64,5 @@
 	button.newGame:focus {
 		border: 0.2rem solid blue;
 	}
-	.board {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
-	.row {
-		display: flex;
-		flex-direction: row;
-	}
+
 </style>
