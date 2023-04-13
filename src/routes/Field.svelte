@@ -10,6 +10,10 @@
 	export function focus() {
 		input.focus();
 	}
+
+	export function isFocused() {
+		return document.activeElement === input;
+	}
 </script>
 
 <button on:click class={victoryClass} bind:this={input} aria-label={ariaLabel}>
