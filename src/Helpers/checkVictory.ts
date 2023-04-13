@@ -1,4 +1,4 @@
-import type { BoardType } from "../Types/BoardType";
+import type { BoardFields } from "../Types/BoardFields";
 import type { Line } from "../Types/Line";
 import type { Player } from "../Types/PlayerType";
 
@@ -18,7 +18,7 @@ type ResultNone = {
 
 type Result = ResultWin | ResultTie | ResultNone
 
-const checkVictoryOnLine = (board: BoardType, line: Line): ResultWin | null => {
+const checkVictoryOnLine = (board: BoardFields, line: Line): ResultWin | null => {
   const [firstCell, secondCell, thirdCell] = line.map(x => board[x.row][x.col])
   if (firstCell === secondCell && secondCell === thirdCell && thirdCell !== ' ') {
     return {
@@ -30,7 +30,7 @@ const checkVictoryOnLine = (board: BoardType, line: Line): ResultWin | null => {
   return null
 }
 
-export function checkVictory(board: BoardType): Result {
+export function checkVictory(board: BoardFields): Result {
   // Check rows
   for (let row = 0; row < 3; row++) {
     const resultRow = checkVictoryOnLine(board, [{ row, col: 0 }, { row, col: 1 }, { row, col: 2 }])

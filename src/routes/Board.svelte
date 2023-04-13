@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { BoardType } from '../Types/BoardType';
+	import type { BoardFields } from '../Types/BoardFields';
 	import type { Line } from '../Types/Line';
 	import type { Player } from '../Types/PlayerType';
 	import Field from './Field.svelte';
 
-	export let board: BoardType;
+	export let boardFields: BoardFields;
 	export let victory: { winner: Player; line: Line } | null = null;
 	export let onClick: (rowIndex: number, colIndex: number) => void;
 
@@ -16,7 +16,7 @@
 </script>
 
 <div class="rows">
-	{#each board as row, rowIndex}
+	{#each boardFields as row, rowIndex}
 		<div class="columns">
 			{#each row as cell, colIndex}
 				<Field

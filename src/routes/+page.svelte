@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { checkVictory as checkVictory } from '../Helpers/checkVictory';
-	import type { BoardType } from '../Types/BoardType';
+	import type { BoardFields } from '../Types/BoardFields';
 	import type { Line } from '../Types/Line';
 	import type { Player } from '../Types/PlayerType';
 	import Board from './Board.svelte';
 
-	function createCleanBoard(): BoardType {
+	function createCleanBoard(): BoardFields {
 		return [
 			[' ', ' ', ' '],
 			[' ', ' ', ' '],
@@ -13,16 +13,16 @@
 		];
 	}
 
-	let board: BoardType = createCleanBoard();
+	let boardFields: BoardFields = createCleanBoard();
 	let currentPlayer: Player = 'X';
 	let victory: { winner: Player; line: Line } | null = null;
 	let boardElement: Board;
 
 	const onClick = (rowIndex: number, colIndex: number) => {
-		if (board[rowIndex][colIndex] === ' ' && victory === null) {
-			board[rowIndex][colIndex] = currentPlayer;
+		if (boardFields[rowIndex][colIndex] === ' ' && victory === null) {
+			boardFields[rowIndex][colIndex] = currentPlayer;
 
-			const win = checkVictory(board);
+			const win = checkVictory(boardFields);
 			if (win.status === 'win') {
 				victory = {
 					winner: win.winner,
@@ -36,7 +36,7 @@
 
 	const newGame = () => {
 		victory = null;
-		board = createCleanBoard();
+		boardFields = createCleanBoard();
 		boardElement.focusFirstField();
 	};
 
@@ -44,7 +44,7 @@
 </script>
 
 <div class="game">
-	<Board {board} {victory} {onClick} bind:this={boardElement} />
+	<Board {boardFields} {victory} {onClick} bind:this={boardElement} />
 	<button class="newGame" on:click={newGame}>New Game</button>
 </div>
 
@@ -64,5 +64,4 @@
 	button.newGame:focus {
 		border: 0.2rem solid blue;
 	}
-
 </style>
